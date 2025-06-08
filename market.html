@@ -1,100 +1,201 @@
 <!DOCTYPE html>
 <html lang="tr">
 <head>
-  <meta charset="UTF-8" />
-  <title>Wondrous Shop | Market</title>
-  <link rel="stylesheet" href="style.css" />
-  <link rel="icon" type="image/png" href="logo.png" />
+<meta charset="UTF-8" />
+<title>Market | Wondrous Shop</title>
+<style>
+  body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: #f0f0f0;
+    margin: 0; padding: 20px;
+  }
+  h1 {
+    text-align: center;
+    margin-bottom: 30px;
+  }
+  .product-list {
+    display: flex;
+    justify-content: center;
+    gap: 30px;
+    flex-wrap: wrap;
+  }
+  .product {
+    background: white;
+    border-radius: 10px;
+    padding: 20px;
+    width: 220px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    text-align: center;
+  }
+  .product h3 {
+    margin-bottom: 15px;
+  }
+  .product button {
+    background: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    padding: 10px 16px;
+    cursor: pointer;
+    font-weight: 600;
+    transition: background-color 0.3s ease;
+  }
+  .product button:hover {
+    background: #45a049;
+  }
+
+  /* Modal styles */
+  #buyModal {
+    display: none;
+    position: fixed;
+    top:0; left:0; right:0; bottom:0;
+    background: rgba(0,0,0,0.6);
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+  }
+  #modalContent {
+    background: white;
+    padding: 25px 30px;
+    border-radius: 12px;
+    width: 400px;
+    box-sizing: border-box;
+    text-align: center;
+  }
+  #modalContent h2 {
+    margin-bottom: 20px;
+  }
+  #modalContent p {
+    margin-bottom: 10px;
+  }
+  #modalContent input[type="file"] {
+    margin: 10px 0 20px 0;
+  }
+  #modalContent button {
+    padding: 12px 20px;
+    background: #4CAF50;
+    border: none;
+    border-radius: 8px;
+    color: white;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  #modalContent button:hover {
+    background-color: #45a049;
+  }
+  #closeModal {
+    background: #ccc;
+    color: #333;
+    margin-left: 15px;
+  }
+</style>
 </head>
 <body>
 
-  <header>
-    <img src="logo.png" alt="Wondrous Shop Logosu" />
-    <h1>Wondrous Shop Market</h1>
-    <nav>
-      <button onclick="location.href='index.html'">Ana Sayfa</button>
-      <button onclick="location.href='market.html'">Market</button>
-    </nav>
-  </header>
+<h1>Market</h1>
 
-  <main class="fade-in">
-    <section id="products">
-      <div class="product" data-id="1" data-name="Steam Checker" data-price="50">
-        <h3>Steam Checker</h3>
-        <p>Steam hesaplarının çalışıp çalışmadığını topluca kontrol edebilirsiniz.</p>
-        <p>Fiyat: 50 ₺</p>
-        <button onclick="addToCart(1)">Sepete Ekle</button>
-      </div>
+<div class="product-list" id="productList">
+  <!-- Ürünler buraya gelecek -->
+</div>
 
-      <div class="product" data-id="2" data-name="Discord Generator Pack" data-price="30">
-        <h3>Discord Generator Pack</h3>
-        <p>Discord Nitro ve Token Generator içeren özel bir paket.</p>
-        <p>Fiyat: 30 ₺</p>
-        <button onclick="addToCart(2)">Sepete Ekle</button>
-      </div>
-    </section>
+<!-- Satın Al Modal -->
+<div id="buyModal">
+  <div id="modalContent">
+    <h2>Satın Al</h2>
+    <p><strong>IBAN:</strong> TR12 3456 7890 1234 5678 9012 34</p>
+    <p>Lütfen dekont görselinizi yükleyin:</p>
+    <input type="file" id="receiptInput" accept="image/*" />
+    <br />
+    <button id="confirmBuyBtn">Satın Al</button>
+    <button id="closeModal">İptal</button>
+  </div>
+</div>
 
-    <button id="cart-button" onclick="toggleCart()">Sepetim (<span id="cart-count">0</span>)</button>
+<script>
+  const currentUserEmail = localStorage.getItem('currentUser');
+  if(!currentUserEmail) {
+    alert('Giriş yapmanız gerekiyor!');
+    window.location.href = 'login.html';
+  }
 
-    <section id="cart" style="display: none;">
-      <h2>Sepetiniz</h2>
-      <ul id="cart-items"></ul>
-      <p><strong>Toplam:</strong> <span id="cart-total">0</span> ₺</p>
-      <button onclick="clearCart()">Sepeti Temizle</button>
-    </section>
-  </main>
+  const users = JSON.parse(localStorage.getItem('users') || '{}');
+  const user = users[currentUserEmail];
+  if(!user) {
+    alert('Kullanıcı bulunamadı.');
+    localStorage.removeItem('currentUser');
+    window.location.href = 'login.html';
+  }
 
-  <footer>
-    📧 İletişim: <a href="mailto:wondrousshopws.iletisim@gmail.com">wondrousshopws.iletisim@gmail.com</a><br />
-    &copy; 2025 Wondrous Shop
-  </footer>
+  // Basit ürün listesi
+  const products = [
+    { id: 1, name: 'Ürün 1' },
+    { id: 2, name: 'Ürün 2' },
+    { id: 3, name: 'Ürün 3' },
+  ];
 
-  <script>
-    let cart = {};
+  const productListDiv = document.getElementById('productList');
+  let selectedProduct = null;
 
-    function addToCart(id) {
-      const productDiv = document.querySelector(`.product[data-id='${id}']`);
-      const name = productDiv.getAttribute('data-name');
-      const price = parseFloat(productDiv.getAttribute('data-price'));
+  products.forEach(prod => {
+    const div = document.createElement('div');
+    div.className = 'product';
+    div.innerHTML = `
+      <h3>${prod.name}</h3>
+      <button data-id="${prod.id}">Satın Al</button>
+    `;
+    productListDiv.appendChild(div);
+  });
 
-      if (cart[id]) {
-        cart[id].qty++;
-      } else {
-        cart[id] = { name: name, price: price, qty: 1 };
-      }
-      updateCartUI();
+  const buyModal = document.getElementById('buyModal');
+  const receiptInput = document.getElementById('receiptInput');
+  const confirmBuyBtn = document.getElementById('confirmBuyBtn');
+  const closeModalBtn = document.getElementById('closeModal');
+
+  productListDiv.addEventListener('click', (e) => {
+    if(e.target.tagName === 'BUTTON') {
+      const id = parseInt(e.target.getAttribute('data-id'));
+      selectedProduct = products.find(p => p.id === id);
+      receiptInput.value = '';
+      buyModal.style.display = 'flex';
+    }
+  });
+
+  closeModalBtn.addEventListener('click', () => {
+    buyModal.style.display = 'none';
+  });
+
+  confirmBuyBtn.addEventListener('click', () => {
+    if(receiptInput.files.length === 0) {
+      alert('Lütfen dekont görseli yükleyin.');
+      return;
     }
 
-    function updateCartUI() {
-      const cartItemsUl = document.getElementById('cart-items');
-      cartItemsUl.innerHTML = '';
-      let total = 0, count = 0;
+    const file = receiptInput.files[0];
+    const reader = new FileReader();
 
-      for (const id in cart) {
-        const item = cart[id];
-        const li = document.createElement('li');
-        li.textContent = `${item.name} - ${item.qty} adet - ${item.price * item.qty} ₺`;
-        cartItemsUl.appendChild(li);
+    reader.onload = function(event) {
+      const receiptImg = event.target.result;
 
-        total += item.price * item.qty;
-        count += item.qty;
-      }
+      // Siparişi localStorage'da sakla
+      const orders = JSON.parse(localStorage.getItem('orders') || '[]');
 
-      document.getElementById('cart-total').textContent = total.toFixed(2);
-      document.getElementById('cart-count').textContent = count;
-    }
+      orders.push({
+        username: user.username,
+        email: user.email,
+        productName: selectedProduct.name,
+        receiptImg
+      });
 
-    function toggleCart() {
-      const cartDiv = document.getElementById('cart');
-      cartDiv.style.display = (cartDiv.style.display === 'none') ? 'block' : 'none';
-    }
+      localStorage.setItem('orders', JSON.stringify(orders));
 
-    function clearCart() {
-      cart = {};
-      updateCartUI();
-      toggleCart();
-    }
-  </script>
+      alert('Siparişiniz alındı! Yönetici inceleyecektir.');
+      buyModal.style.display = 'none';
+    };
+
+    reader.readAsDataURL(file);
+  });
+</script>
 
 </body>
 </html>
