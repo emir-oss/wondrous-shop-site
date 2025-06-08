@@ -4,6 +4,7 @@
   <meta charset="UTF-8" />
   <title>Wondrous Shop | Market</title>
   <link rel="stylesheet" href="style.css" />
+  <link rel="icon" type="image/png" href="logo.png" />
 </head>
 <body>
 
@@ -11,89 +12,89 @@
     <img src="logo.png" alt="Wondrous Shop Logosu" />
     <h1>Wondrous Shop Market</h1>
     <nav>
-      <button onclick="window.location.href='index.html'">Ana Sayfa</button>
-      <button onclick="window.location.href='market.html'">Market</button>
+      <button onclick="location.href='index.html'">Ana Sayfa</button>
+      <button onclick="location.href='market.html'">Market</button>
     </nav>
   </header>
 
-  <main>
-    <div id="products">
+  <main class="fade-in">
+    <section id="products">
       <div class="product" data-id="1" data-name="Steam Checker" data-price="50">
         <h3>Steam Checker</h3>
-        <p>Steam hesaplarının çalışıp çalışmadığını kontrol edebilirsiniz (toplu şekilde)</p>
+        <p>Steam hesaplarının çalışıp çalışmadığını topluca kontrol edebilirsiniz.</p>
         <p>Fiyat: 50 ₺</p>
         <button onclick="addToCart(1)">Sepete Ekle</button>
       </div>
-      <div class="product" data-id="2" data-name="Discord Generator Pack" data-price="20">
+
+      <div class="product" data-id="2" data-name="Discord Generator Pack" data-price="30">
         <h3>Discord Generator Pack</h3>
-        <p>Bu ürün satın alındığında sizlere Discord Nitro Generator ve Discord T0ken Generator verilir.</p>
+        <p>Discord Nitro ve Token Generator içeren özel bir paket.</p>
         <p>Fiyat: 30 ₺</p>
         <button onclick="addToCart(2)">Sepete Ekle</button>
       </div>
-      <!-- Daha fazla ürün buraya eklenebilir -->
-    </div>
+    </section>
 
     <button id="cart-button" onclick="toggleCart()">Sepetim (<span id="cart-count">0</span>)</button>
 
-    <div id="cart" style="display:none;">
+    <section id="cart" style="display: none;">
       <h2>Sepetiniz</h2>
       <ul id="cart-items"></ul>
-      <p><strong>Toplam: </strong><span id="cart-total">0</span> ₺</p>
+      <p><strong>Toplam:</strong> <span id="cart-total">0</span> ₺</p>
       <button onclick="clearCart()">Sepeti Temizle</button>
-    </div>
+    </section>
   </main>
 
-<script>
-  let cart = {};
+  <footer>
+    📧 İletişim: <a href="mailto:wondrousshopws.iletisim@gmail.com">wondrousshopws.iletisim@gmail.com</a><br />
+    &copy; 2025 Wondrous Shop
+  </footer>
 
-  function addToCart(id) {
-    const productDiv = document.querySelector(`.product[data-id='${id}']`);
-    const name = productDiv.getAttribute('data-name');
-    const price = parseFloat(productDiv.getAttribute('data-price'));
+  <script>
+    let cart = {};
 
-    if(cart[id]) {
-      cart[id].qty++;
-    } else {
-      cart[id] = { name: name, price: price, qty: 1 };
-    }
-    updateCartUI();
-  }
+    function addToCart(id) {
+      const productDiv = document.querySelector(`.product[data-id='${id}']`);
+      const name = productDiv.getAttribute('data-name');
+      const price = parseFloat(productDiv.getAttribute('data-price'));
 
-  function updateCartUI() {
-    const cartItemsUl = document.getElementById('cart-items');
-    cartItemsUl.innerHTML = '';
-
-    let total = 0;
-    let count = 0;
-    for (const id in cart) {
-      const item = cart[id];
-      const li = document.createElement('li');
-      li.textContent = `${item.name} - ${item.qty} adet - ${item.price * item.qty} ₺`;
-      cartItemsUl.appendChild(li);
-
-      total += item.price * item.qty;
-      count += item.qty;
+      if (cart[id]) {
+        cart[id].qty++;
+      } else {
+        cart[id] = { name: name, price: price, qty: 1 };
+      }
+      updateCartUI();
     }
 
-    document.getElementById('cart-total').textContent = total.toFixed(2);
-    document.getElementById('cart-count').textContent = count;
-  }
+    function updateCartUI() {
+      const cartItemsUl = document.getElementById('cart-items');
+      cartItemsUl.innerHTML = '';
+      let total = 0, count = 0;
 
-  function toggleCart() {
-    const cartDiv = document.getElementById('cart');
-    if(cartDiv.style.display === 'none' || cartDiv.style.display === '') {
-      cartDiv.style.display = 'block';
-    } else {
-      cartDiv.style.display = 'none';
+      for (const id in cart) {
+        const item = cart[id];
+        const li = document.createElement('li');
+        li.textContent = `${item.name} - ${item.qty} adet - ${item.price * item.qty} ₺`;
+        cartItemsUl.appendChild(li);
+
+        total += item.price * item.qty;
+        count += item.qty;
+      }
+
+      document.getElementById('cart-total').textContent = total.toFixed(2);
+      document.getElementById('cart-count').textContent = count;
     }
-  }
 
-  function clearCart() {
-    cart = {};
-    updateCartUI();
-    toggleCart();
-  }
-</script>
+    function toggleCart() {
+      const cartDiv = document.getElementById('cart');
+      cartDiv.style.display = (cartDiv.style.display === 'none') ? 'block' : 'none';
+    }
+
+    function clearCart() {
+      cart = {};
+      updateCartUI();
+      toggleCart();
+    }
+  </script>
 
 </body>
 </html>
