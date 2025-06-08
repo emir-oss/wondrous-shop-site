@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8" />
+  <title>Wondrous Shop | Market</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <header>
+    <img src="logo.png" alt="Wondrous Shop Logosu" />
+    <h1>Wondrous Shop Market</h1>
+    <nav>
+      <button onclick="window.location.href='index.html'">Ana Sayfa</button>
+      <button onclick="window.location.href='market.html'">Market</button>
+    </nav>
+  </header>
+
+  <main>
+    <div id="products">
+      <div class="product" data-id="1" data-name="Steam Checker" data-price="50">
+        <h3>Steam Checker</h3>
+        <p>Steam hesaplarının çalışıp çalışmadığını kontrol edebilirsiniz (toplu şekilde)</p>
+        <p>Fiyat: 50 ₺</p>
+        <button onclick="addToCart(1)">Sepete Ekle</button>
+      </div>
+      <div class="product" data-id="2" data-name="Discord Generator Pack" data-price="20">
+        <h3>Discord Generator Pack</h3>
+        <p>Bu ürün satın alındığında sizlere Discord Nitro Generator ve Discord T0ken Generator verilir.</p>
+        <p>Fiyat: 30 ₺</p>
+        <button onclick="addToCart(2)">Sepete Ekle</button>
+      </div>
+      <!-- Daha fazla ürün buraya eklenebilir -->
+    </div>
+
+    <button id="cart-button" onclick="toggleCart()">Sepetim (<span id="cart-count">0</span>)</button>
+
+    <div id="cart" style="display:none;">
+      <h2>Sepetiniz</h2>
+      <ul id="cart-items"></ul>
+      <p><strong>Toplam: </strong><span id="cart-total">0</span> ₺</p>
+      <button onclick="clearCart()">Sepeti Temizle</button>
+    </div>
+  </main>
+
+<script>
+  let cart = {};
+
+  function addToCart(id) {
+    const productDiv = document.querySelector(`.product[data-id='${id}']`);
+    const name = productDiv.getAttribute('data-name');
+    const price = parseFloat(productDiv.getAttribute('data-price'));
+
+    if(cart[id]) {
+      cart[id].qty++;
+    } else {
+      cart[id] = { name: name, price: price, qty: 1 };
+    }
+    updateCartUI();
+  }
+
+  function updateCartUI() {
+    const cartItemsUl = document.getElementById('cart-items');
+    cartItemsUl.innerHTML = '';
+
+    let total = 0;
+    let count = 0;
+    for (const id in cart) {
+      const item = cart[id];
+      const li = document.createElement('li');
+      li.textContent = `${item.name} - ${item.qty} adet - ${item.price * item.qty} ₺`;
+      cartItemsUl.appendChild(li);
+
+      total += item.price * item.qty;
+      count += item.qty;
+    }
+
+    document.getElementById('cart-total').textContent = total.toFixed(2);
+    document.getElementById('cart-count').textContent = count;
+  }
+
+  function toggleCart() {
+    const cartDiv = document.getElementById('cart');
+    if(cartDiv.style.display === 'none' || cartDiv.style.display === '') {
+      cartDiv.style.display = 'block';
+    } else {
+      cartDiv.style.display = 'none';
+    }
+  }
+
+  function clearCart() {
+    cart = {};
+    updateCartUI();
+    toggleCart();
+  }
+</script>
+
+</body>
+</html>
