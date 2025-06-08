@@ -2,39 +2,128 @@
 <html lang="tr">
 <head>
   <meta charset="UTF-8" />
-  <title>Giriş Yap - Wondrous Shop</title>
-  <link rel="stylesheet" href="style.css" />
+  <title>Giriş Yap | Wondrous Shop</title>
+  <style>
+    /* Temel reset ve gövde ayarları */
+    * {
+      box-sizing: border-box;
+    }
+    body, html {
+      height: 100%;
+      margin: 0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(135deg, #667eea, #764ba2);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      color: #333;
+    }
+
+    /* Form kapsayıcısı */
+    .login-container {
+      background: white;
+      padding: 30px 40px;
+      border-radius: 12px;
+      box-shadow: 0 12px 30px rgba(0,0,0,0.2);
+      width: 360px;
+      text-align: center;
+    }
+
+    h2 {
+      margin-bottom: 25px;
+      color: #444;
+    }
+
+    /* Input alanları */
+    input[type="text"],
+    input[type="email"],
+    input[type="password"] {
+      width: 100%;
+      padding: 12px 15px;
+      margin: 10px 0 20px 0;
+      border: 1.5px solid #ccc;
+      border-radius: 8px;
+      font-size: 16px;
+      transition: border-color 0.3s ease;
+    }
+    input[type="text"]:focus,
+    input[type="email"]:focus,
+    input[type="password"]:focus {
+      border-color: #4CAF50;
+      outline: none;
+    }
+
+    /* Giriş yap butonu */
+    button {
+      width: 100%;
+      padding: 14px 0;
+      background-color: #4CAF50;
+      border: none;
+      border-radius: 8px;
+      color: white;
+      font-size: 18px;
+      font-weight: bold;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+    button:hover {
+      background-color: #45a049;
+    }
+
+    /* Hata mesajı */
+    .error-msg {
+      color: #e74c3c;
+      font-size: 14px;
+      margin-bottom: 15px;
+      display: none;
+    }
+  </style>
 </head>
 <body>
-  <div class="form-container">
-    <h1>Giriş Yap</h1>
-    <form onsubmit="login(event)">
-      <input type="email" id="email" placeholder="E-posta" required />
-      <input type="password" id="password" placeholder="Şifre" required />
+
+  <div class="login-container">
+    <h2>Giriş Yap</h2>
+    <form id="loginForm" novalidate>
+      <input type="text" id="usernameOrEmail" name="usernameOrEmail" placeholder="Kullanıcı Adı veya E-posta" required />
+      <input type="password" id="password" name="password" placeholder="Şifre" required minlength="6" />
+      <div id="errorMsg" class="error-msg"></div>
       <button type="submit">Giriş Yap</button>
     </form>
-    <p>Hesabın yok mu? <a href="register.html">Kayıt ol</a></p>
   </div>
 
   <script>
-    function login(event) {
+    const form = document.getElementById('loginForm');
+    const errorMsg = document.getElementById('errorMsg');
+
+    form.addEventListener('submit', function(event) {
       event.preventDefault();
-      const email = document.getElementById("email").value;
-      const password = document.getElementById("password").value;
 
-      const users = JSON.parse(localStorage.getItem("users") || "[]");
-      const user = users.find(u => u.email === email && u.password === password);
+      const usernameOrEmail = form.usernameOrEmail.value.trim();
+      const password = form.password.value;
 
-      if (!user) {
-        alert("Hatalı giriş. Lütfen kontrol edin.");
+      if (!usernameOrEmail) {
+        showError("Kullanıcı adı veya e-posta girin.");
         return;
       }
 
-      // Giriş başarılı → oturumu sakla
-      localStorage.setItem("currentUser", JSON.stringify(user));
-      alert("Giriş başarılı!");
-      window.location.href = "index.html";
+      if (password.length < 6) {
+        showError("Şifre en az 6 karakter olmalıdır.");
+        return;
+      }
+
+      errorMsg.style.display = 'none';
+
+      // Burada giriş doğrulaması yapılacak (ör: API çağrısı, localStorage kontrolü vs)
+      alert(`Giriş başarılı!\nKullanıcı: ${usernameOrEmail}`);
+
+      form.reset();
+    });
+
+    function showError(message) {
+      errorMsg.textContent = message;
+      errorMsg.style.display = 'block';
     }
   </script>
+
 </body>
 </html>
