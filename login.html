@@ -4,7 +4,6 @@
   <meta charset="UTF-8" />
   <title>Giriş Yap | Wondrous Shop</title>
   <style>
-    /* Temel reset ve gövde ayarları */
     * {
       box-sizing: border-box;
     }
@@ -18,8 +17,6 @@
       align-items: center;
       color: #333;
     }
-
-    /* Form kapsayıcısı */
     .login-container {
       background: white;
       padding: 30px 40px;
@@ -28,13 +25,10 @@
       width: 360px;
       text-align: center;
     }
-
     h2 {
       margin-bottom: 25px;
       color: #444;
     }
-
-    /* Input alanları */
     input[type="text"],
     input[type="email"],
     input[type="password"] {
@@ -52,8 +46,6 @@
       border-color: #4CAF50;
       outline: none;
     }
-
-    /* Giriş yap butonu */
     button {
       width: 100%;
       padding: 14px 0;
@@ -69,13 +61,23 @@
     button:hover {
       background-color: #45a049;
     }
-
-    /* Hata mesajı */
     .error-msg {
       color: #e74c3c;
       font-size: 14px;
       margin-bottom: 15px;
       display: none;
+    }
+    .switch-link {
+      margin-top: 20px;
+      font-size: 14px;
+    }
+    .switch-link a {
+      color: #4CAF50;
+      text-decoration: none;
+      font-weight: bold;
+    }
+    .switch-link a:hover {
+      text-decoration: underline;
     }
   </style>
 </head>
@@ -89,6 +91,9 @@
       <div id="errorMsg" class="error-msg"></div>
       <button type="submit">Giriş Yap</button>
     </form>
+    <div class="switch-link">
+      Hesabın yok mu? <a href="register.html">Kayıt ol</a>
+    </div>
   </div>
 
   <script>
@@ -111,12 +116,25 @@
         return;
       }
 
+      // Kullanıcı doğrulaması
+      const users = JSON.parse(localStorage.getItem('users') || '{}');
+      const user = Object.values(users).find(u => (u.username === usernameOrEmail || u.email === usernameOrEmail));
+
+      if (!user) {
+        showError("Kullanıcı bulunamadı.");
+        return;
+      }
+
+      if (user.password !== password) {
+        showError("Şifre yanlış.");
+        return;
+      }
+
+      // Giriş başarılı
+      localStorage.setItem('currentUser', user.email);
       errorMsg.style.display = 'none';
-
-      // Burada giriş doğrulaması yapılacak (ör: API çağrısı, localStorage kontrolü vs)
-      alert(`Giriş başarılı!\nKullanıcı: ${usernameOrEmail}`);
-
-      form.reset();
+      alert('Giriş başarılı! Ana sayfaya yönlendiriliyorsunuz.');
+      window.location.href = 'index.html';
     });
 
     function showError(message) {
