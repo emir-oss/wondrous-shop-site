@@ -4,7 +4,6 @@
   <meta charset="UTF-8" />
   <title>Kayıt Ol | Wondrous Shop</title>
   <style>
-    /* Temel reset ve gövde ayarları */
     * {
       box-sizing: border-box;
     }
@@ -18,8 +17,6 @@
       align-items: center;
       color: #333;
     }
-
-    /* Form kapsayıcısı */
     .register-container {
       background: white;
       padding: 30px 40px;
@@ -28,19 +25,16 @@
       width: 360px;
       text-align: center;
     }
-
     h2 {
       margin-bottom: 25px;
       color: #444;
     }
-
-    /* Input alanları */
     input[type="text"],
     input[type="email"],
     input[type="password"] {
       width: 100%;
       padding: 12px 15px;
-      margin: 10px 0 20px 0;
+      margin: 10px 0 15px 0;
       border: 1.5px solid #ccc;
       border-radius: 8px;
       font-size: 16px;
@@ -52,8 +46,6 @@
       border-color: #4CAF50;
       outline: none;
     }
-
-    /* Kayıt ol butonu */
     button {
       width: 100%;
       padding: 14px 0;
@@ -69,13 +61,23 @@
     button:hover {
       background-color: #45a049;
     }
-
-    /* Hata mesajı */
     .error-msg {
       color: #e74c3c;
       font-size: 14px;
       margin-bottom: 15px;
       display: none;
+    }
+    .switch-link {
+      margin-top: 20px;
+      font-size: 14px;
+    }
+    .switch-link a {
+      color: #4CAF50;
+      text-decoration: none;
+      font-weight: bold;
+    }
+    .switch-link a:hover {
+      text-decoration: underline;
     }
   </style>
 </head>
@@ -87,10 +89,13 @@
       <input type="text" id="username" name="username" placeholder="Kullanıcı Adı" required />
       <input type="email" id="email" name="email" placeholder="E-posta" required />
       <input type="password" id="password" name="password" placeholder="Şifre" required minlength="6" />
-      <input type="password" id="confirmPassword" name="confirmPassword" placeholder="Şifreyi Tekrarla" required minlength="6" />
+      <input type="password" id="confirmPassword" name="confirmPassword" placeholder="Şifre (Tekrar)" required minlength="6" />
       <div id="errorMsg" class="error-msg"></div>
       <button type="submit">Kayıt Ol</button>
     </form>
+    <div class="switch-link">
+      Hesabın var mı? <a href="login.html">Giriş yap</a>
+    </div>
   </div>
 
   <script>
@@ -105,30 +110,41 @@
       const password = form.password.value;
       const confirmPassword = form.confirmPassword.value;
 
-      // Temel doğrulamalar
       if (!username) {
-        showError("Lütfen kullanıcı adınızı girin.");
+        showError("Kullanıcı adı girin.");
         return;
       }
-      if (!validateEmail(email)) {
-        showError("Lütfen geçerli bir e-posta adresi girin.");
+
+      if (!email || !validateEmail(email)) {
+        showError("Geçerli bir e-posta girin.");
         return;
       }
+
       if (password.length < 6) {
         showError("Şifre en az 6 karakter olmalıdır.");
         return;
       }
+
       if (password !== confirmPassword) {
         showError("Şifreler eşleşmiyor.");
         return;
       }
 
-      // Eğer doğrulamalar başarılıysa hata mesajını gizle
-      errorMsg.style.display = 'none';
+      // Kullanıcıyı localStorage'a kaydet (basit demo)
+      const users = JSON.parse(localStorage.getItem('users') || '{}');
+      if(users[email]) {
+        showError("Bu e-posta ile zaten kayıtlı kullanıcı var.");
+        return;
+      }
+      users[email] = { username, email, password };
+      localStorage.setItem('users', JSON.stringify(users));
 
-      // Burada kullanıcıyı kaydetme işlemi yapılacak (ör: localStorage, API çağrısı vs)
-      alert(`Kayıt başarılı!\nKullanıcı Adı: ${username}\nE-posta: ${email}`);
-      form.reset();
+      // Otomatik giriş yap (localStorage'da currentUser tut)
+      localStorage.setItem('currentUser', email);
+
+      errorMsg.style.display = 'none';
+      alert('Kayıt başarılı! Ana sayfaya yönlendiriliyorsunuz.');
+      window.location.href = 'index.html';
     });
 
     function showError(message) {
@@ -137,7 +153,6 @@
     }
 
     function validateEmail(email) {
-      // Basit email doğrulama regex
       return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
     }
   </script>
