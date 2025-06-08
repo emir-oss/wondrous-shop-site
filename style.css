@@ -100,3 +100,18 @@ footer {
   color: #aaa;
   margin-top: 50px;
 }
+
+/* Başlangıçta içerik gizli */
+.fade-in {
+  opacity: 0;
+  transform: translateY(30px);
+  animation: fadeInMove 1s ease-out forwards;
+}
+
+/* Animasyon tanımı */
+@keyframes fadeInMove {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
