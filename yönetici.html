@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8" />
+<title>Yönetici Paneli | Wondrous Shop</title>
+<style>
+  body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: #fafafa;
+    margin: 0;
+    padding: 20px;
+  }
+  h1 {
+    text-align: center;
+    margin-bottom: 20px;
+  }
+  #orderList {
+    max-width: 800px;
+    margin: 0 auto;
+    border-collapse: collapse;
+    width: 100%;
+  }
+  #orderList th, #orderList td {
+    border: 1px solid #ddd;
+    padding: 12px;
+  }
+  #orderList th {
+    background-color: #4CAF50;
+    color: white;
+  }
+  #noOrders {
+    text-align: center;
+    margin-top: 50px;
+    font-size: 18px;
+    color: #777;
+  }
+  button {
+    margin-bottom: 20px;
+    padding: 10px 15px;
+    cursor: pointer;
+    border: none;
+    background-color: #4CAF50;
+    color: white;
+    border-radius: 6px;
+    font-weight: 600;
+  }
+</style>
+</head>
+<body>
+
+<h1>Yönetici Paneli - Siparişler</h1>
+<button id="logoutBtn">Çıkış Yap</button>
+
+<table id="orderList">
+  <thead>
+    <tr>
+      <th>#</th>
+      <th>Kullanıcı</th>
+      <th>E-posta</th>
+      <th>Ürün</th>
+      <th>Dekont Görseli</th>
+    </tr>
+  </thead>
+  <tbody id="ordersBody">
+    <!-- Siparişler buraya gelecek -->
+  </tbody>
+</table>
+
+<div id="noOrders" style="display:none;">Henüz sipariş yok.</div>
+
+<script>
+  // Yönetici doğrulaması
+  const currentUserEmail = localStorage.getItem('currentUser');
+  if(!currentUserEmail) {
+    alert('Giriş yapmanız gerekiyor!');
+    window.location.href = 'login.html';
+  } else {
+    const users = JSON.parse(localStorage.getItem('users') || '{}');
+    const user = users[currentUserEmail];
+    if(!user || !user.isAdmin) {
+      alert('Yönetici değilsiniz!');
+      window.location.href = 'index.html';
+    }
+  }
+
+  document.getElementById('logoutBtn').addEventListener('click', () => {
+    localStorage.removeItem('currentUser');
+    window.location.href = 'login.html';
+  });
+
+  // Siparişleri yükle (localStorage'da tutacağız)
+  const orders = JSON.parse(localStorage.getItem('orders') || '[]');
+  const tbody = document.getElementById('ordersBody');
+  const noOrdersDiv = document.getElementById('noOrders');
+
+  if(orders.length === 0) {
+    noOrdersDiv.style.display = 'block';
+  } else {
+    noOrdersDiv.style.display = 'none';
+    orders.forEach((order, i) => {
+      const tr = document.createElement('tr');
+      tr.innerHTML = `
+        <td>${i+1}</td>
+        <td>${order.username}</td>
+        <td>${order.email}</td>
+        <td>${order.productName}</td>
+        <td>${order.receiptImg ? `<img src="${order.receiptImg}" alt="Dekont" style="max-width:120px; max-height:80px; border-radius:6px;"/>` : 'Yüklenmedi'}</td>
+      `;
+      tbody.appendChild(tr);
+    });
+  }
+</script>
+
+</body>
+</html>
