@@ -1,53 +1,103 @@
 <!DOCTYPE html>
 <html lang="tr">
 <head>
-  <meta charset="UTF-8" />
-  <title>Wondrous Shop | Event Sunucusu</title>
-  <link rel="stylesheet" href="style.css" />
-  <link rel="icon" type="image/png" href="logo.png" />
+<meta charset="UTF-8" />
+<title>Ana Sayfa | Wondrous Shop</title>
+<style>
+  body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: #f5f5f5;
+    margin: 0; padding: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding-top: 60px;
+  }
+  header {
+    width: 100%;
+    background: #4CAF50;
+    color: white;
+    padding: 15px 20px;
+    box-sizing: border-box;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: fixed;
+    top: 0; left: 0;
+  }
+  #userInfo {
+    font-weight: bold;
+  }
+  button {
+    padding: 10px 18px;
+    background: white;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: 600;
+    transition: background-color 0.3s ease;
+  }
+  button:hover {
+    background-color: #ddd;
+  }
+  #adminBtn {
+    display: none;
+    background: #222;
+    color: #4CAF50;
+    margin-left: 10px;
+  }
+  main {
+    margin-top: 100px;
+    text-align: center;
+  }
+</style>
 </head>
 <body>
 
-  <header>
-    <img src="logo.png" alt="Wondrous Shop Logosu" />
-    <h1>Wondrous Shop</h1>
-    <nav>
-      <button onclick="location.href='index.html'">Ana Sayfa</button>
-      <button onclick="location.href='market.html'">Market</button>
-    </nav>
-  </header>
+<header>
+  <div id="userInfo">Hoşgeldiniz, <span id="usernameDisplay"></span></div>
+  <div>
+    <button id="logoutBtn">Çıkış Yap</button>
+    <button id="adminBtn">Yönetici Paneli</button>
+  </div>
+</header>
 
-  <main class="fade-in">
-    <section>
-      <h2>🎉 Etkinlikler ve Ödüller</h2>
-      <p>Sunucumuzda düzenli olarak etkinlikler yapıyoruz. Davet yap, ödül kazan! 🎁</p>
-      <p>Katılmak için hemen sunucumuza gel:</p>
-      <a href="https://discord.gg/senin-davet-linkin" target="_blank" class="btn-link">→ Sunucuya Katıl</a>
-    </section>
+<main>
+  <h1>Wondrous Shop Ana Sayfa</h1>
+  <p>Alışverişe başlamak için <a href="market.html">Market</a> sayfasına gidin.</p>
+</main>
 
-    <section>
-      <h2>Biz Kimiz?</h2>
-      <p>
-        Biz 2023 yılından beri Discord'da piyasada farklı konularda da olsa bulunmuş bir ekibiz. 2024 yılında bu sunucu kuruldu ve sunucu sayımız 2'ye yükseldi.
-        İlk çıktığımızda çoğumuz tanışmıyorduk bile. Bizi "Hope Studios" bir araya getirdi (ilk adı "Diamond Studios" idi).
-      </p>
-      <p>
-        İlk sunucumuz bir Minecraft RP sunucusuydu. Zamanla ekipte ihanetler oldu, bazıları geri dönmek istese de kabul etmedik. Ancak biz her zorluğu aştık.
-      </p>
-      <p>
-        Günümüzde sunucunun kod işlerini ve botlarını ben yürütüyorum. Stock ve diğer görevlerle ise kurucu ve yetkili ekip ilgileniyor.
-      </p>
-      <p>
-        Toplamda iki sunucumuz var: biri tag sunucusu, diğeri ise bu sunucu. Amacımız sizlere kaliteli, ücretsiz oyun deneyimi sunmak.
-      </p>
-      <p><strong>Saygılarımızla,<br>Wondrous Shop</strong></p>
-    </section>
-  </main>
+<script>
+  // Aktif kullanıcıyı al
+  const currentUserEmail = localStorage.getItem('currentUser');
+  if(!currentUserEmail) {
+    alert('Giriş yapmanız gerekiyor!');
+    window.location.href = 'login.html';
+  } else {
+    const users = JSON.parse(localStorage.getItem('users') || '{}');
+    const user = users[currentUserEmail];
+    if(!user) {
+      alert('Kullanıcı bulunamadı. Lütfen tekrar giriş yapın.');
+      localStorage.removeItem('currentUser');
+      window.location.href = 'login.html';
+    } else {
+      document.getElementById('usernameDisplay').textContent = user.username;
+      // Yönetici mi kontrol et
+      if(user.isAdmin) {
+        document.getElementById('adminBtn').style.display = 'inline-block';
+      }
+    }
+  }
 
-  <footer>
-    📧 İletişim: <a href="mailto:wondrousshopws.iletisim@gmail.com">wondrousshopws.iletisim@gmail.com</a><br />
-    &copy; 2025 Wondrous Shop
-  </footer>
+  document.getElementById('logoutBtn').addEventListener('click', () => {
+    localStorage.removeItem('currentUser');
+    window.location.href = 'login.html';
+  });
+
+  document.getElementById('adminBtn').addEventListener('click', () => {
+    window.location.href = 'yönetici.html';
+  });
+</script>
 
 </body>
 </html>
