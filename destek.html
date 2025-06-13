@@ -45,7 +45,7 @@
     button:hover {
       background-color: #004a99;
     }
-    .thank-you {
+    .message {
       margin-top: 30px;
       background-color: #e0ffe0;
       padding: 20px;
@@ -53,6 +53,11 @@
       border-radius: 8px;
       font-size: 1.2rem;
       color: #006600;
+    }
+    .error {
+      background-color: #ffe0e0;
+      border-color: #aa0000;
+      color: #660000;
     }
   </style>
 </head>
@@ -72,7 +77,18 @@
     <h2>Destek Talebi Gönder</h2>
     <p>Herhangi bir sorun, soru veya öneriniz için aşağıdaki formu doldurun. En kısa sürede size geri döneceğiz.</p>
 
-    <form id="destekForm">
+    <!-- Eğer mesaj gönderildiyse, PHP mesajı gösterir -->
+    <?php
+    if (isset($_GET['status'])) {
+      if ($_GET['status'] === 'success') {
+        echo '<div class="message">Teşekkürler! Destek talebiniz başarıyla gönderildi.</div>';
+      } else if ($_GET['status'] === 'error') {
+        echo '<div class="message error">Üzgünüz, bir hata oluştu. Lütfen tekrar deneyin.</div>';
+      }
+    }
+    ?>
+
+    <form action="destek.php" method="POST">
       <label for="isim">İsim:</label>
       <input type="text" id="isim" name="isim" required placeholder="Adınızı girin" />
 
@@ -85,29 +101,12 @@
       <button type="submit">Gönder</button>
     </form>
 
-    <div id="teşekkür" class="thank-you" style="display:none;">
-      <strong>Teşekkürler!</strong> Destek talebiniz başarıyla gönderildi. En kısa sürede size dönüş yapacağız.
-    </div>
   </main>
 
   <footer>
     📧 İletişim: <a href="mailto:wondrousshopws.iletisim@gmail.com">wondrousshopws.iletisim@gmail.com</a><br />
     &copy; 2025 Wondrous Shop
   </footer>
-
-  <script>
-    const form = document.getElementById('destekForm');
-    const thanks = document.getElementById('teşekkür');
-
-    form.addEventListener('submit', function(event) {
-      event.preventDefault();  // Formun sayfayı yenilemesini engelle
-
-      // Burada istersen form verilerini backend'e yollayabilirsin (şimdilik yok)
-      // Formu gizle ve teşekkür mesajını göster
-      form.style.display = 'none';
-      thanks.style.display = 'block';
-    });
-  </script>
 
 </body>
 </html>
