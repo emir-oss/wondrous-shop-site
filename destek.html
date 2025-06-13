@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8" />
+  <title>Wondrous Shop | Destek</title>
+  <link rel="stylesheet" href="style.css" />
+  <link rel="icon" type="image/png" href="logo.png" />
+  <style>
+    main {
+      max-width: 600px;
+      margin: 30px auto;
+      padding: 0 15px;
+      font-family: Arial, sans-serif;
+    }
+    form {
+      display: flex;
+      flex-direction: column;
+    }
+    label {
+      margin-top: 15px;
+      font-weight: bold;
+    }
+    input, textarea {
+      padding: 10px;
+      margin-top: 5px;
+      font-size: 1rem;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      resize: vertical;
+    }
+    textarea {
+      min-height: 120px;
+    }
+    button {
+      margin-top: 20px;
+      padding: 12px;
+      font-size: 1.1rem;
+      background-color: #0066cc;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+    button:hover {
+      background-color: #004a99;
+    }
+    .thank-you {
+      margin-top: 30px;
+      background-color: #e0ffe0;
+      padding: 20px;
+      border: 2px solid #00aa00;
+      border-radius: 8px;
+      font-size: 1.2rem;
+      color: #006600;
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <img src="logo.png" alt="Wondrous Shop Logosu" />
+    <h1>Wondrous Shop</h1>
+    <nav>
+      <button onclick="location.href='index.html'">Ana Sayfa</button>
+      <button onclick="location.href='market.html'">Market</button>
+      <button onclick="location.href='destek.html'">Destek</button>
+    </nav>
+  </header>
+
+  <main>
+    <h2>Destek Talebi Gönder</h2>
+    <p>Herhangi bir sorun, soru veya öneriniz için aşağıdaki formu doldurun. En kısa sürede size geri döneceğiz.</p>
+
+    <form id="destekForm">
+      <label for="isim">İsim:</label>
+      <input type="text" id="isim" name="isim" required placeholder="Adınızı girin" />
+
+      <label for="email">E-posta:</label>
+      <input type="email" id="email" name="email" required placeholder="E-posta adresinizi girin" />
+
+      <label for="mesaj">Mesajınız:</label>
+      <textarea id="mesaj" name="mesaj" required placeholder="Mesajınızı yazın"></textarea>
+
+      <button type="submit">Gönder</button>
+    </form>
+
+    <div id="teşekkür" class="thank-you" style="display:none;">
+      <strong>Teşekkürler!</strong> Destek talebiniz başarıyla gönderildi. En kısa sürede size dönüş yapacağız.
+    </div>
+  </main>
+
+  <footer>
+    📧 İletişim: <a href="mailto:wondrousshopws.iletisim@gmail.com">wondrousshopws.iletisim@gmail.com</a><br />
+    &copy; 2025 Wondrous Shop
+  </footer>
+
+  <script>
+    const form = document.getElementById('destekForm');
+    const thanks = document.getElementById('teşekkür');
+
+    form.addEventListener('submit', function(event) {
+      event.preventDefault();  // Formun sayfayı yenilemesini engelle
+
+      // Burada istersen form verilerini backend'e yollayabilirsin (şimdilik yok)
+      // Formu gizle ve teşekkür mesajını göster
+      form.style.display = 'none';
+      thanks.style.display = 'block';
+    });
+  </script>
+
+</body>
+</html>
