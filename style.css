@@ -49,3 +49,11 @@
 .product button:hover {
   background-color: #0097d6;
 }
+
+body {
+  margin: 0;
+  background-color: #202225; /* Koyu arka plan */
+  color: white;              /* Yazılar beyaz */
+  font-family: Arial, sans-serif;
+  line-height: 1.5;
+}
