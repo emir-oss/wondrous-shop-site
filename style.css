@@ -1,117 +1,51 @@
-/* Genel ayarlar */
-* {
-  box-sizing: border-box;
-}
-
-body {
-  margin: 0;
-  background-color: #202225; /* Koyu arka plan */
-  color: white; /* Yazılar beyaz */
-  font-family: Arial, sans-serif;
-  line-height: 1.5;
-}
-
-/* Header alanı */
-header {
-  background-color: #ffd700; /* Altın sarısı */
-  padding: 15px 20px;
+#products {
   display: flex;
-  align-items: center;
-  justify-content: space-between;
   flex-wrap: wrap;
+  gap: 20px;
+  justify-content: center;
+  margin-top: 20px;
 }
 
-header img {
-  width: 60px;
-  height: auto;
-}
-
-header h1 {
-  color: #1e1e1e;
-  margin: 0 20px;
-  flex-grow: 1;
-  font-size: 1.8rem;
-}
-
-/* Menü butonları */
-nav {
-  display: flex;
-  gap: 10px;
-}
-
-nav button {
-  background-color: #1e1e1e;
-  color: #ffd700;
-  border: none;
-  padding: 10px 18px;
-  cursor: pointer;
-  font-weight: bold;
-  border-radius: 5px;
-  transition: background-color 0.3s ease;
-}
-
-nav button:hover {
-  background-color: #333;
-}
-
-/* Ana içerik alanı */
-main {
-  max-width: 900px;
-  margin: 30px auto;
-  padding: 0 15px;
-}
-
-section {
+/* Her ürün kutusu */
+.product {
   background-color: #2f3136;
+  border: 1px solid #444;
+  border-radius: 10px;
   padding: 20px;
-  margin-bottom: 30px;
-  border-radius: 8px;
-  box-shadow: 0 0 8px rgba(0,0,0,0.6);
+  width: 280px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+  transition: transform 0.3s ease;
 }
 
-h2 {
+.product:hover {
+  transform: translateY(-5px);
+}
+
+/* Ürün başlığı */
+.product h3 {
   margin-top: 0;
   color: #ffd700;
 }
 
-/* Link tarzı buton */
-a.btn-link {
-  display: inline-block;
+/* Ürün açıklaması ve stok bilgisi */
+.product p {
+  margin: 8px 0;
+  color: #ddd;
+}
+
+/* Satın Al butonu */
+.product button {
   margin-top: 10px;
-  padding: 10px 25px;
+  padding: 10px 20px;
   background-color: #00bfff;
+  border: none;
+  border-radius: 5px;
   color: white;
-  text-decoration: none;
-  border-radius: 6px;
-  font-weight: 600;
+  font-weight: bold;
+  cursor: pointer;
   transition: background-color 0.3s ease;
 }
 
-a.btn-link:hover {
+.product button:hover {
   background-color: #0097d6;
-}
-
-/* Footer */
-footer {
-  background-color: #111;
-  text-align: center;
-  padding: 15px 10px;
-  font-size: 0.9rem;
-  color: #aaa;
-  margin-top: 50px;
-}
-
-/* Başlangıçta içerik gizli */
-.fade-in {
-  opacity: 0;
-  transform: translateY(30px);
-  animation: fadeInMove 1s ease-out forwards;
-}
-
-/* Animasyon tanımı */
-@keyframes fadeInMove {
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
 }
