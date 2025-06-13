@@ -2,7 +2,7 @@
 session_start();
 
 // Belirlenen şifre (kendi şifreni buraya yazabilirsin)
-$dogru_parola = "admin123";
+$dogru_parola = "Fyhvb7h3";
 
 // Çıkış yapmak için
 if (isset($_GET['logout'])) {
