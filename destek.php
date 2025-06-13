@@ -1,44 +1,49 @@
+<?php if (isset($_GET['durum']) && $_GET['durum'] === 'basarili'): ?>
+  <p style="color: green;">Destek talebiniz başarıyla gönderildi. Teşekkürler!</p>
+<?php endif; ?>
+
 <?php
-if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    $isim = strip_tags(trim($_POST["isim"] ?? ''));
-    $email = filter_var(trim($_POST["email"] ?? ''), FILTER_VALIDATE_EMAIL);
-    $mesaj = strip_tags(trim($_POST["mesaj"] ?? ''));
+// destek.php
 
-    if (!$isim || !$email || !$mesaj) {
-        header("Location: destek.html?status=error");
-        exit;
-    }
+// Dosya adı
+$dosya = 'destekler.json';
 
-    $data = [
-        "isim" => $isim,
-        "email" => $email,
-        "mesaj" => $mesaj,
-        "tarih" => date("Y-m-d H:i:s")
-    ];
+// POST verilerini al
+$isim = trim($_POST['isim'] ?? '');
+$email = trim($_POST['email'] ?? '');
+$mesaj = trim($_POST['mesaj'] ?? '');
 
-    $dosya = "destekler.json";
+// Basit doğrulama
+if (!$isim || !$email || !$mesaj) {
+    die('Lütfen tüm alanları doldurun.');
+}
 
-    // Var olan dosyadan destekleri oku
-    if (file_exists($dosya)) {
-        $json = file_get_contents($dosya);
-        $destekler = json_decode($json, true);
-        if (!is_array($destekler)) {
-            $destekler = [];
-        }
-    } else {
+// Yeni destek kaydı dizisi
+$yeniKayit = [
+    'isim' => htmlspecialchars($isim, ENT_QUOTES),
+    'email' => htmlspecialchars($email, ENT_QUOTES),
+    'mesaj' => htmlspecialchars($mesaj, ENT_QUOTES),
+    'tarih' => date('Y-m-d H:i:s')
+];
+
+// Var olan kayıtları oku
+if (file_exists($dosya)) {
+    $icerik = file_get_contents($dosya);
+    $destekler = json_decode($icerik, true);
+    if (!is_array($destekler)) {
         $destekler = [];
     }
-
-    // Yeni destek kaydını ekle
-    $destekler[] = $data;
-
-    // Dosyaya tekrar kaydet
-    if (file_put_contents($dosya, json_encode($destekler, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE))) {
-        header("Location: destek.html?status=success");
-    } else {
-        header("Location: destek.html?status=error");
-    }
 } else {
-    header("Location: destek.html");
-    exit;
+    $destekler = [];
 }
+
+// Yeni kaydı ekle
+$destekler[] = $yeniKayit;
+
+// JSON olarak kaydet
+file_put_contents($dosya, json_encode($destekler, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE));
+
+// Yönlendir (destek.html'ye) ve başarı mesajı ile
+header('Location: destek.html?durum=basarili');
+exit;
+?>
