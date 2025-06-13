@@ -2,27 +2,51 @@
 <html lang="tr">
 <head>
   <meta charset="UTF-8" />
-  <title>Destek Talebi - Wondrous Shop</title>
-  <link rel="stylesheet" href="style.css" />
+  <title>Destek Formu</title>
 </head>
 <body>
-  <header>
-    <h1>Wondrous Shop Destek</h1>
-  </header>
 
-  <main>
-    <form action="destek.php" method="POST">
-      <label for="isim">Adınız:</label><br />
-      <input type="text" id="isim" name="isim" required /><br /><br />
+  <h2>Destek Talebi Gönder</h2>
+  <form id="destek-form">
+    <label for="isim">İsim:</label><br />
+    <input type="text" id="isim" name="isim" required /><br /><br />
 
-      <label for="email">E-posta:</label><br />
-      <input type="email" id="email" name="email" required /><br /><br />
+    <label for="email">E-posta:</label><br />
+    <input type="email" id="email" name="email" required /><br /><br />
 
-      <label for="mesaj">Mesajınız:</label><br />
-      <textarea id="mesaj" name="mesaj" rows="5" required></textarea><br /><br />
+    <label for="mesaj">Mesaj:</label><br />
+    <textarea id="mesaj" name="mesaj" rows="5" required></textarea><br /><br />
 
-      <button type="submit">Gönder</button>
-    </form>
-  </main>
+    <button type="submit">Gönder</button>
+  </form>
+
+  <p id="durum"></p>
+
+  <!-- EmailJS SDK -->
+  <script src="https://cdn.emailjs.com/sdk/3.2/email.min.js"></script>
+  <script>
+    (function(){
+      emailjs.init("2uiv5JOEatRlJpzh_"); // Buraya EmailJS User ID yaz
+
+      const form = document.getElementById('destek-form');
+      const durum = document.getElementById('durum');
+
+      form.addEventListener('submit', function(event) {
+        event.preventDefault();
+
+        emailjs.sendForm('site', 'template_muuytak', this)
+          .then(function() {
+            durum.textContent = 'Destek talebiniz gönderildi, teşekkürler!';
+            durum.style.color = 'green';
+            form.reset();
+          }, function(error) {
+            durum.textContent = 'Gönderim başarısız, lütfen tekrar deneyin.';
+            durum.style.color = 'red';
+            console.error('EmailJS error:', error);
+          });
+      });
+    })();
+  </script>
+
 </body>
 </html>
