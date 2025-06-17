@@ -55,3 +55,23 @@
 
 </body>
 </html>
+
+<!-- Firebase App -->
+<script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-app.js"></script>
+<!-- Firebase Auth -->
+<script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-auth.js"></script>
+<!-- Firebase Firestore -->
+<script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-firestore.js"></script>
+
+<script>
+  const firebaseConfig = {
+    apiKey: "AIzaSyDHdo-90Z72eSFYSzHS-8kdoeCRIxue9Os",
+    authDomain: "wondrous-shop.firebaseapp.com",
+    projectId: "wondrous-shop",
+    // diğer bilgiler
+  };
+
+  firebase.initializeApp(firebaseConfig);
+  const auth = firebase.auth();
+  const db = firebase.firestore();
+</script>
