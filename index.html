@@ -14,9 +14,7 @@
     <nav>
       <button onclick="location.href='index.html'">Ana Sayfa</button>
       <button onclick="location.href='market.html'">Market</button>
-<button onclick="window.open('https://docs.google.com/forms/d/e/1FAIpQLScHGVFatutkMbTJrhxx8Gbj_kMnJRlqEulhV3XI1LtiQzOd4A/viewform', '_blank')">
-  Destek
-</button>
+      <button onclick="window.open('https://docs.google.com/forms/d/e/1FAIpQLScHGVFatutkMbTJrhxx8Gbj_kMnJRlqEulhV3XI1LtiQzOd4A/viewform', '_blank')">Destek</button>
     </nav>
   </header>
 
@@ -31,19 +29,17 @@
     <section>
       <h2>Biz Kimiz?</h2>
       <p>
-        Biz 2023 yılından beri insanlara bedavaya kaliteli oyun hesapları dağıtarak bilinen bir ekipiz.Bu yolda çok isim değiştirdik fakat 2024 yılının Eylül ayında
-        ismimizi Wondrous Shop düzenledik ve artık hep bu isimle sizlere kaliteli hesaplar vermeye devam edeceğiz.
+        Biz 2023 yılından beri insanlara bedavaya kaliteli oyun hesapları dağıtarak bilinen bir ekipiz. Bu yolda çok isim değiştirdik fakat 2024 yılının Eylül ayında
+        ismimizi Wondrous Shop olarak düzenledik ve artık hep bu isimle sizlere kaliteli hesaplar vermeye devam edeceğiz.
       </p>
       <p>
-        Bizim toplam olarak Discordda 2 tane sunucumuz bulunmaktadır Wondrous Tedarik ve Wondrous Shop bu sunuculara katılıp davet yaparak bedava hesaplar kazana bilmeniz mümkündür.
+        Bizim toplam olarak Discord'da 2 tane sunucumuz bulunmaktadır: Wondrous Tedarik ve Wondrous Shop. Bu sunuculara katılıp davet yaparak bedava hesaplar kazanmanız mümkündür.
       </p>
       <h2>Oyun Hesaplarını Nasıl Alıyoruz?</h2>
       <p>
-        Biz farklı Sunucularla iş birliği yapıyoruz.Biz onların reklamını yaparken onlarda bize çeşitli desteklerde bulunuyor.
+        Biz farklı sunucularla iş birliği yapıyoruz. Biz onların reklamını yaparken onlar da bize çeşitli desteklerde bulunuyor.
       </p>
-      <p>
-        Bizi tercih ettiğiniz için teşekkür ederiz
-      </p>
+      <p>Bizi tercih ettiğiniz için teşekkür ederiz</p>
       <p><strong>Saygılarımızla,<br>Wondrous Shop Ekibi.</strong></p>
     </section>
   </main>
@@ -53,25 +49,26 @@
     &copy; 2025 Wondrous Shop
   </footer>
 
+  <!-- 🔌 Firebase JS Kitaplıkları -->
+  <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-auth.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-firestore.js"></script>
+
+  <!-- 🔧 Firebase Yapılandırması ve Başlatma -->
+  <script>
+    const firebaseConfig = {
+      apiKey: "AIzaSyDHdo-90Z72eSFYSzHS-8kdoeCRIxue9Os",
+      authDomain: "wondrous-shop.firebaseapp.com",
+      projectId: "wondrous-shop",
+      storageBucket: "wondrous-shop.appspot.com",
+      messagingSenderId: "1234567890", // → Firebase'deki gerçek değerlerle değiştir
+      appId: "1:1234567890:web:abcdefg1234567" // → Firebase'deki gerçek değerlerle değiştir
+    };
+
+    // Firebase'i başlat
+    const app = firebase.initializeApp(firebaseConfig);
+    const auth = firebase.auth();
+    const db = firebase.firestore();
+  </script>
 </body>
 </html>
-
-<!-- Firebase App -->
-<script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-app.js"></script>
-<!-- Firebase Auth -->
-<script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-auth.js"></script>
-<!-- Firebase Firestore -->
-<script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-firestore.js"></script>
-
-<script>
-  const firebaseConfig = {
-    apiKey: "AIzaSyDHdo-90Z72eSFYSzHS-8kdoeCRIxue9Os",
-    authDomain: "wondrous-shop.firebaseapp.com",
-    projectId: "wondrous-shop",
-    // diğer bilgiler
-  };
-
-  firebase.initializeApp(firebaseConfig);
-  const auth = firebase.auth();
-  const db = firebase.firestore();
-</script>
